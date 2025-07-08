@@ -13,15 +13,15 @@ export default tseslint.config(
   eslintPluginPrettierRecommended,
   {
     languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.jest,
-      },
-      sourceType: 'commonjs',
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
+		globals: {
+			...globals.node,
+			...globals.jest,
+		},
+		sourceType: 'commonjs',
+		parserOptions: {
+			projectService: true,
+			tsconfigRootDir: import.meta.dirname,
+		},
     },
   },
   {

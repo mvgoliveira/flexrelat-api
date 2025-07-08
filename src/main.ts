@@ -1,8 +1,18 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import { get } from "env-var";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
+    console.log("🚀 API is running on PORT:", get("PORT").asString() ?? 5000);
+
+    const app = await NestFactory.create(AppModule, {
+        snapshot: get("ENVIRONMENT").required().asString() != "production",
+    });
+
+    app.enableCors({
+        origin: "*",
+    });
+
+    await app.listen(get("PORT").required().asString() ?? 5000);
 }
-bootstrap();
+void bootstrap();
