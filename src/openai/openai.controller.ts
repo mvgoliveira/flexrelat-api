@@ -3,10 +3,10 @@ import { OpenAiService } from "./openai.service";
 
 @Controller("openai")
 export class OpenAiController {
-    constructor(private svc: OpenAiService) {}
+    constructor(private openAiService: OpenAiService) {}
 
     @Post("chat")
     async chat(@Body() body: { prompt: string }) {
-        return { reply: await this.svc.sendMessage(body.prompt) };
+        return { reply: await this.openAiService.sendMessage(body.prompt) };
     }
 }

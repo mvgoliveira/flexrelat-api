@@ -9,6 +9,8 @@ async function bootstrap() {
         snapshot: get("ENVIRONMENT").required().asString() != "production",
     });
 
+    app.setGlobalPrefix("api");
+
     app.enableCors({
         origin: "*",
     });
