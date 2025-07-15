@@ -8,7 +8,7 @@ export class ChangesService {
 
     async moreText(getChangeDto: GetChangeDto) {
         return await this.openAiService.sendMessage(
-            `Deixe esse texto mais longo, mas não muito: ${getChangeDto.content}`
+            `Deixe esse texto mais longo, mas não muito, sem alterar o tipo do elemento html: ${getChangeDto.content}`
         );
     }
 
