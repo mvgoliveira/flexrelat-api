@@ -1,12 +1,12 @@
 import { Column, CreatedAt, DataType, Model, Table, UpdatedAt } from "sequelize-typescript";
 
 @Table({
-    tableName: "documents",
+    tableName: "models",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
 })
-export class DocumentsModel extends Model {
+export class ModelsModel extends Model {
     @Column({
         type: DataType.UUID,
         primaryKey: true,
@@ -27,11 +27,16 @@ export class DocumentsModel extends Model {
     declare name: string;
 
     @Column({
-        type: DataType.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
+        type: DataType.STRING,
+        allowNull: true,
     })
-    declare is_public: boolean;
+    declare description: string;
+
+    @Column({
+        type: DataType.ARRAY(DataType.STRING),
+        allowNull: true,
+    })
+    declare keywords: string[];
 
     @Column({
         type: DataType.STRING,

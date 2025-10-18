@@ -1,0 +1,113 @@
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { CreateModelDto } from "./dto/create-model.dto";
+import { UpdateModelDto } from "./dto/update-model.dto";
+import { ModelsModel } from "./model/models";
+import { DocumentsModel } from "../documents/model/documents";
+import { InjectModel } from "@nestjs/sequelize";
+import { Model } from "./entities/model.entity";
+
+@Injectable()
+export class ModelsService {
+    constructor(
+        @InjectModel(ModelsModel)
+        private modelsModel: typeof ModelsModel,
+        @InjectModel(DocumentsModel)
+        private documentsModel: typeof DocumentsModel
+    ) {}
+
+    async create(createModelDto: CreateModelDto): Promise<Model> {
+        const documentExist = await this.documentsModel.findOne({
+            where: { id: createModelDto.document_id },
+            attributes: ["content"],
+        });
+
+        if (!documentExist) {
+            throw new NotFoundException(`Document with id ${createModelDto.document_id} not found`);
+        }
+
+        const model = await this.modelsModel.create({
+            ...createModelDto,
+            content: documentExist.content,
+        });
+
+        return {
+            id: model.id,
+            userId: model.user_id,
+            name: model.name,
+            description: model.description,
+            publicCode: model.public_code,
+            keywords: model.keywords,
+            createdAt: model.created_at,
+            updatedAt: model.updated_at,
+        };
+    }
+
+    async findByUserId(userId: string): Promise<ModelsModel[]> {
+        const models = await this.modelsModel.findAll({
+            where: { user_id: userId },
+            attributes: [
+                "id",
+                "name",
+                "user_id",
+                ["public_code", "publicCode"],
+                "description",
+                "keywords",
+                ["created_at", "createdAt"],
+                ["updated_at", "updatedAt"],
+            ],
+        });
+
+        if (models.length <= 0) {
+            throw new NotFoundException(`No models found for user with id ${userId}`);
+        }
+
+        return models;
+    }
+
+    async findByPublicCode(publicCode: string): Promise<ModelsModel> {
+        const model = await this.modelsModel.findOne({
+            where: { public_code: publicCode },
+            attributes: [
+                "id",
+                "name",
+                ["user_id", "userId"],
+                "content",
+                ["public_code", "publicCode"],
+                "description",
+                "keywords",
+                ["created_at", "createdAt"],
+                ["updated_at", "updatedAt"],
+            ],
+        });
+
+        if (!model) {
+            throw new NotFoundException(`Model with public code ${publicCode} not found`);
+        }
+
+        return model;
+    }
+
+    async update(id: string, updateModelDto: UpdateModelDto): Promise<ModelsModel> {
+        const model = await this.modelsModel.findByPk(id);
+
+        if (!model) {
+            throw new NotFoundException(`Model with id ${id} not found`);
+        }
+
+        await model.update(updateModelDto);
+
+        return model;
+    }
+
+    async remove(id: string): Promise<{ message: string }> {
+        const model = await this.modelsModel.findByPk(id);
+
+        if (!model) {
+            throw new NotFoundException(`Model with id ${id} not found`);
+        }
+
+        await model.destroy();
+
+        return { message: "Modelo removido com sucesso" };
+    }
+}

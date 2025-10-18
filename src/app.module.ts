@@ -6,6 +6,7 @@ import { ChangesModule } from "./changes/changes.module";
 import { SequelizeConfig } from "./ormconfig";
 import { UsersModule } from "./users/users.module";
 import { DocumentsModule } from './documents/documents.module';
+import { ModelsModule } from './models/models.module';
 
 @Module({
     imports: [
@@ -15,6 +16,7 @@ import { DocumentsModule } from './documents/documents.module';
         ChangesModule,
         UsersModule,
         DocumentsModule,
+        ModelsModule,
     ],
 })
 export class AppModule {}

@@ -1,6 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { get } from "env-var";
+import { ValidationPipe } from "@nestjs/common";
 
 async function bootstrap() {
     console.log("🚀 API is running on PORT:", get("PORT").asString() ?? 5000);
@@ -14,6 +15,14 @@ async function bootstrap() {
     app.enableCors({
         origin: "*",
     });
+
+    app.useGlobalPipes(
+        new ValidationPipe({
+            whitelist: true,
+            forbidNonWhitelisted: true,
+            transform: true,
+        })
+    );
 
     await app.listen(get("PORT").required().asString() ?? 5000);
 }
