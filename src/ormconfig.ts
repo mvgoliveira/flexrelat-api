@@ -1,7 +1,6 @@
 import { SequelizeModule } from "@nestjs/sequelize";
 import { get } from "env-var";
-// import { DevicesGroup } from "./devices-group/model/devicesGroup";
-// import { DeviceStates } from "./devices/model/device_states";
+import { UsersModel } from "./users/model/users";
 
 const SequelizeConfig = SequelizeModule.forRoot({
     dialect: "postgres",
@@ -10,8 +9,7 @@ const SequelizeConfig = SequelizeModule.forRoot({
     username: get("DATABASE_USERNAME").required().asString(),
     password: get("DATABASE_PASSWORD").required().asString(),
     database: get("DATABASE_NAME").required().asString(),
-    models: [],
-    // models: [DevicesGroup, DeviceStates],
+    models: [UsersModel],
 });
 
 export { SequelizeConfig };
