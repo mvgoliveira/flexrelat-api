@@ -3,7 +3,6 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { InjectModel } from "@nestjs/sequelize";
 import { UsersModel } from "./model/users";
 import * as bcrypt from "bcrypt";
-import { User } from "./entities/user.entity";
 import { CreateUser } from "./entities/createUser.entity";
 
 @Injectable()
@@ -15,7 +14,7 @@ export class UsersService {
 
     async create(createUserDto: CreateUserDto): Promise<CreateUser> {
         const existingUser = await this.usersModel.findOne({
-            where: { email: createUserDto.email }
+            where: { email: createUserDto.email },
         });
 
         if (existingUser) {
@@ -34,17 +33,11 @@ export class UsersService {
             id: user.id,
             username: user.username,
             email: user.email,
-            createdAt: user.createdAt,
+            createdAt: user.created_at,
         };
     }
 
-    async findByEmail(email: string): Promise<UsersModel | null> {
-        return await this.usersModel.findOne({
-            where: { email }
-        });
-    }
-
-    async remove(id: number): Promise<void> {
+    async remove(id: string): Promise<{ message: string }> {
         const user = await this.usersModel.findByPk(id);
 
         if (!user) {
@@ -52,6 +45,8 @@ export class UsersService {
         }
 
         await user.destroy();
+
+        return { message: "Usuário removido com sucesso" };
     }
 
     async validatePassword(plainPassword: string, hashedPassword: string): Promise<boolean> {

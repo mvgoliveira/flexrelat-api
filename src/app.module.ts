@@ -5,6 +5,7 @@ import { OpenAiModule } from "./openai/openai.module";
 import { ChangesModule } from "./changes/changes.module";
 import { SequelizeConfig } from "./ormconfig";
 import { UsersModule } from "./users/users.module";
+import { DocumentsModule } from './documents/documents.module';
 
 @Module({
     imports: [
@@ -13,6 +14,7 @@ import { UsersModule } from "./users/users.module";
         OpenAiModule,
         ChangesModule,
         UsersModule,
+        DocumentsModule,
     ],
 })
 export class AppModule {}
