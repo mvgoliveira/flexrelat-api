@@ -27,7 +27,6 @@ export class AuthService {
             try {
                 const createdUser = await this.usersService.create({
                     email,
-                    password,
                     username,
                     firebaseUid: userRecord.uid,
                 });

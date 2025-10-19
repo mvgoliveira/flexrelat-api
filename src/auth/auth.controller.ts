@@ -1,6 +1,5 @@
-import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Post } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { FirebaseGuard } from "@alpha018/nestjs-firebase-auth";
 import { LoginDto } from "./dto/login.dto";
 import { RegisterDto } from "./dto/register.dto";
 
@@ -39,11 +38,5 @@ export class AuthController {
         @Body("new-password") newPassword: string
     ) {
         return await this.authService.confirmPasswordReset({ oobCode, newPassword });
-    }
-
-    @UseGuards(FirebaseGuard)
-    @Get()
-    testValidation() {
-        return "If you see this, the FirebaseGuard is working!";
     }
 }

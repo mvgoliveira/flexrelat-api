@@ -1,20 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from "@nestjs/common";
 import { ModelsService } from "./models.service";
 import { UpdateModelDto } from "./dto/update-model.dto";
 import { CreateModelDto } from "./dto/create-model.dto";
+import { AuthUser, CurrentUser, FirebaseJwtAuthGuard } from "src/auth";
 
 @Controller("models")
 export class ModelsController {
     constructor(private readonly modelsService: ModelsService) {}
 
     @Post("")
-    create(@Body() createModelDto: CreateModelDto) {
-        return this.modelsService.create(createModelDto);
+    @UseGuards(FirebaseJwtAuthGuard)
+    create(@Body() createModelDto: CreateModelDto, @CurrentUser() user: AuthUser) {
+        return this.modelsService.create(user.id, createModelDto);
     }
 
-    @Get("user/:userId")
-    findByUserId(@Param("userId") userId: string) {
-        return this.modelsService.findByUserId(userId);
+    @Get("user")
+    @UseGuards(FirebaseJwtAuthGuard)
+    findByUserId(@CurrentUser() user: AuthUser) {
+        return this.modelsService.findByUserId(user.id);
     }
 
     @Get("public/:publicCode")
@@ -22,13 +25,13 @@ export class ModelsController {
         return this.modelsService.findByPublicCode(publicCode);
     }
 
-    @Patch(":id")
-    update(@Param("id") id: string, @Body() updateDocumentDto: UpdateModelDto) {
-        return this.modelsService.update(id, updateDocumentDto);
+    @Patch(":modelId")
+    update(@Param("modelId") modelId: string, @Body() updateDocumentDto: UpdateModelDto) {
+        return this.modelsService.update(modelId, updateDocumentDto);
     }
 
-    @Delete(":id")
-    remove(@Param("id") id: string) {
-        return this.modelsService.remove(id);
+    @Delete(":modelId")
+    remove(@Param("modelId") modelId: string) {
+        return this.modelsService.remove(modelId);
     }
 }

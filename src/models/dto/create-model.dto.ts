@@ -1,10 +1,6 @@
 import { IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
 
 export class CreateModelDto {
-    @IsUUID()
-    @IsNotEmpty()
-    user_id: string;
-
     @IsNotEmpty()
     @IsUUID()
     document_id: string;

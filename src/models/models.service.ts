@@ -15,18 +15,23 @@ export class ModelsService {
         private documentsModel: typeof DocumentsModel
     ) {}
 
-    async create(createModelDto: CreateModelDto): Promise<Model> {
+    async create(userId: string, createModelDto: CreateModelDto): Promise<Model> {
         const documentExist = await this.documentsModel.findOne({
             where: { id: createModelDto.document_id },
             attributes: ["content"],
         });
 
         if (!documentExist) {
-            throw new NotFoundException(`Document with id ${createModelDto.document_id} not found`);
+            throw new NotFoundException(`Documento não encontrado`);
+        }
+
+        if (documentExist.user_id === userId) {
+            throw new NotFoundException(`Documento não pertence a este usuário`);
         }
 
         const model = await this.modelsModel.create({
             ...createModelDto,
+            user_id: userId,
             content: documentExist.content,
         });
 
@@ -58,7 +63,7 @@ export class ModelsService {
         });
 
         if (models.length <= 0) {
-            throw new NotFoundException(`No models found for user with id ${userId}`);
+            throw new NotFoundException(`Nenhum modelo encontrado para o usuário`);
         }
 
         return models;
@@ -81,7 +86,7 @@ export class ModelsService {
         });
 
         if (!model) {
-            throw new NotFoundException(`Model with public code ${publicCode} not found`);
+            throw new NotFoundException(`Modelo não encontrado`);
         }
 
         return model;
@@ -91,7 +96,7 @@ export class ModelsService {
         const model = await this.modelsModel.findByPk(id);
 
         if (!model) {
-            throw new NotFoundException(`Model with id ${id} not found`);
+            throw new NotFoundException(`Modelo não encontrado`);
         }
 
         await model.update(updateModelDto);
@@ -103,7 +108,7 @@ export class ModelsService {
         const model = await this.modelsModel.findByPk(id);
 
         if (!model) {
-            throw new NotFoundException(`Model with id ${id} not found`);
+            throw new NotFoundException(`Modelo não encontrado`);
         }
 
         await model.destroy();

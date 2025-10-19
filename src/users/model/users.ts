@@ -30,12 +30,6 @@ export class UsersModel extends Model {
     declare email: string;
 
     @Column({
-        type: DataType.STRING,
-        allowNull: false,
-    })
-    declare password: string;
-
-    @Column({
         type: DataType.DATE,
         defaultValue: DataType.NOW,
     })

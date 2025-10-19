@@ -43,7 +43,7 @@ export class DocumentsService {
         });
 
         if (documents.length <= 0) {
-            throw new NotFoundException(`No documents found for user with id ${userId}`);
+            throw new NotFoundException(`Nenhum documento foi encontrado`);
         }
 
         return documents;
@@ -66,17 +66,25 @@ export class DocumentsService {
         });
 
         if (!document) {
-            throw new NotFoundException(`Document with public code ${publicCode} not found`);
+            throw new NotFoundException(`Documento não encontrado`);
         }
 
         return document;
     }
 
-    async update(id: string, updateDocumentDto: UpdateDocumentDto): Promise<UpdatedDocument> {
-        const document = await this.documentsModel.findByPk(id);
+    async update(
+        documentId: string,
+        userId: string,
+        updateDocumentDto: UpdateDocumentDto
+    ): Promise<UpdatedDocument> {
+        const document = await this.documentsModel.findByPk(documentId);
 
         if (!document) {
-            throw new NotFoundException(`Document with id ${id} not found`);
+            throw new NotFoundException(`Documento não encontrado`);
+        }
+
+        if (document.user_id !== userId) {
+            throw new NotFoundException(`Documento não pertence a este usuário`);
         }
 
         const newDocument = await document.update(updateDocumentDto, {
@@ -91,11 +99,15 @@ export class DocumentsService {
         };
     }
 
-    async remove(id: string): Promise<{ message: string }> {
+    async remove(id: string, userId: string): Promise<{ message: string }> {
         const document = await this.documentsModel.findByPk(id);
 
         if (!document) {
-            throw new NotFoundException(`Document with id ${id} not found`);
+            throw new NotFoundException(`Documento não encontrado`);
+        }
+
+        if (document.user_id !== userId) {
+            throw new NotFoundException(`Documento não pertence a este usuário`);
         }
 
         await document.destroy();
