@@ -26,11 +26,13 @@ export class UsersService {
 
         const user = await this.usersModel.create({
             ...createUserDto,
+            firebase_uid: createUserDto.firebaseUid,
             password: hashedPassword,
         });
 
         return {
             id: user.id,
+            firebaseUid: user.firebase_uid,
             username: user.username,
             email: user.email,
             createdAt: user.created_at,

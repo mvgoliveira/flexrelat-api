@@ -12,6 +12,13 @@ export class UsersModel extends Model {
     @Column({
         type: DataType.STRING,
         allowNull: false,
+        unique: true,
+    })
+    declare firebase_uid: string;
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
     })
     declare username: string;
 
