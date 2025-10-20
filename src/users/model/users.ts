@@ -10,20 +10,20 @@ export class UsersModel extends Model {
     declare id: string;
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.TEXT,
         allowNull: false,
         unique: true,
     })
     declare firebase_uid: string;
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.TEXT,
         allowNull: false,
     })
     declare username: string;
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.TEXT,
         allowNull: false,
         unique: true,
     })

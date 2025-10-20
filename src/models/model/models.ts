@@ -21,25 +21,25 @@ export class ModelsModel extends Model {
     declare user_id: string;
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.TEXT,
         allowNull: true,
     })
     declare name: string;
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.TEXT,
         allowNull: true,
     })
     declare description: string;
 
     @Column({
-        type: DataType.ARRAY(DataType.STRING),
+        type: DataType.ARRAY(DataType.TEXT),
         allowNull: true,
     })
     declare keywords: string[];
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.TEXT,
         allowNull: false,
         unique: true,
         defaultValue: () => Math.random().toString(36).substring(2, 10).toUpperCase(),
@@ -47,7 +47,7 @@ export class ModelsModel extends Model {
     declare public_code: string;
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.TEXT,
         allowNull: true,
     })
     declare content: string;
