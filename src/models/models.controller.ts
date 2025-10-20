@@ -26,11 +26,17 @@ export class ModelsController {
     }
 
     @Patch(":modelId")
-    update(@Param("modelId") modelId: string, @Body() updateDocumentDto: UpdateModelDto) {
-        return this.modelsService.update(modelId, updateDocumentDto);
+    @UseGuards(FirebaseJwtAuthGuard)
+    update(
+        @Param("modelId") modelId: string,
+        @Body() updateDocumentDto: UpdateModelDto,
+        @CurrentUser() user: AuthUser
+    ) {
+        return this.modelsService.update(modelId, user.id, updateDocumentDto);
     }
 
     @Delete(":modelId")
+    @UseGuards(FirebaseJwtAuthGuard)
     remove(@Param("modelId") modelId: string) {
         return this.modelsService.remove(modelId);
     }

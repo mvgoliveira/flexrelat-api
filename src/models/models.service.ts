@@ -92,11 +92,19 @@ export class ModelsService {
         return model;
     }
 
-    async update(id: string, updateModelDto: UpdateModelDto): Promise<ModelsModel> {
-        const model = await this.modelsModel.findByPk(id);
+    async update(
+        modelId: string,
+        userId: string,
+        updateModelDto: UpdateModelDto
+    ): Promise<ModelsModel> {
+        const model = await this.modelsModel.findByPk(modelId);
 
         if (!model) {
             throw new NotFoundException(`Modelo não encontrado`);
+        }
+
+        if (model.user_id !== userId) {
+            throw new NotFoundException(`Modelo não pertence a este usuário`);
         }
 
         await model.update(updateModelDto);
@@ -104,8 +112,8 @@ export class ModelsService {
         return model;
     }
 
-    async remove(id: string): Promise<{ message: string }> {
-        const model = await this.modelsModel.findByPk(id);
+    async remove(modelId: string): Promise<{ message: string }> {
+        const model = await this.modelsModel.findByPk(modelId);
 
         if (!model) {
             throw new NotFoundException(`Modelo não encontrado`);
