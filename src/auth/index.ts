@@ -1,11 +1,11 @@
 // Guards
-export * from "./guards/firebase-jwt-auth.guard";
+export * from "./guards/session-cookie-auth.guard";
 
 // Decorators
 export * from "./decorators/current-user.decorator";
 
 // Interfaces
-export * from "./interfaces/auth-user.interface";
+export * from "./interfaces/session-user.interface";
 
 // Strategies
-export * from "./strategies/firebase-jwt.strategy";
+export * from "./strategies/session-cookie.strategy";

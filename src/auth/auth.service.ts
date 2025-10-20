@@ -75,7 +75,7 @@ export class AuthService {
                 }
             );
 
-            const { idToken, localId, refreshToken, expiresIn } = response.data;
+            const { idToken, localId } = response.data;
 
             const userRecord = await this.firebaseProvider.auth.getUser(localId);
 
@@ -89,9 +89,7 @@ export class AuthService {
                     email: userRecord.email,
                     emailVerified: userRecord.emailVerified,
                 },
-                token: idToken,
-                refreshToken,
-                expiresIn,
+                idToken,
             };
         } catch (error: unknown) {
             if (error instanceof UnauthorizedException) {
@@ -111,6 +109,38 @@ export class AuthService {
             }
 
             throw new UnauthorizedException("Email ou senha inválidos");
+        }
+    }
+
+    // 5 dias por padrão
+    async createSessionCookie(idToken: string, expiresIn: number = 60 * 60 * 24 * 5 * 1000) {
+        try {
+            const sessionCookie = await this.firebaseProvider.auth.createSessionCookie(idToken, {
+                expiresIn,
+            });
+            return sessionCookie;
+        } catch {
+            throw new UnauthorizedException("Erro ao criar session cookie");
+        }
+    }
+
+    async verifySessionCookie(sessionCookie: string) {
+        try {
+            const decodedClaims = await this.firebaseProvider.auth.verifySessionCookie(
+                sessionCookie,
+                true
+            );
+            return decodedClaims;
+        } catch {
+            throw new UnauthorizedException("Session cookie inválido ou expirado");
+        }
+    }
+
+    async revokeRefreshTokens(uid: string) {
+        try {
+            await this.firebaseProvider.auth.revokeRefreshTokens(uid);
+        } catch {
+            throw new UnauthorizedException("Erro ao revogar tokens");
         }
     }
 
@@ -215,6 +245,21 @@ export class AuthService {
                 throw error;
             }
             throw new UnauthorizedException("Erro ao redefinir a senha");
+        }
+    }
+
+    async deleteAccount(userId: string, userUid: string) {
+        try {
+            await this.usersService.remove(userId);
+            await this.firebaseProvider.auth.deleteUser(userUid);
+
+            return { message: "Conta deletada com sucesso" };
+        } catch (error) {
+            if (error instanceof UnauthorizedException) {
+                throw error;
+            }
+
+            throw new UnauthorizedException("Erro ao deletar a conta");
         }
     }
 }

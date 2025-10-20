@@ -1,7 +1,7 @@
-export interface AuthUser {
+export interface SessionUser {
     id: string;
+    uid: string;
     email: string;
     username: string;
-    firebaseUid: string;
     emailVerified?: boolean;
 }

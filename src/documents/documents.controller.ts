@@ -11,21 +11,21 @@ import {
 } from "@nestjs/common";
 import { DocumentsService } from "./documents.service";
 import { UpdateDocumentDto } from "./dto/update-document.dto";
-import { AuthUser, CurrentUser, FirebaseJwtAuthGuard } from "src/auth";
+import { SessionUser, CurrentUser, SessionCookieAuthGuard } from "src/auth";
 
 @Controller("documents")
 export class DocumentsController {
     constructor(private readonly documentsService: DocumentsService) {}
 
     @Post()
-    @UseGuards(FirebaseJwtAuthGuard)
-    async create(@CurrentUser() user: AuthUser) {
+    @UseGuards(SessionCookieAuthGuard)
+    async create(@CurrentUser() user: SessionUser) {
         return this.documentsService.create({ user_id: user.id });
     }
 
     @Get("user")
-    @UseGuards(FirebaseJwtAuthGuard)
-    async findByUserId(@CurrentUser() user: AuthUser) {
+    @UseGuards(SessionCookieAuthGuard)
+    async findByUserId(@CurrentUser() user: SessionUser) {
         return await this.documentsService.findByUserId(user.id);
     }
 
@@ -35,18 +35,18 @@ export class DocumentsController {
     }
 
     @Patch(":documentId")
-    @UseGuards(FirebaseJwtAuthGuard)
+    @UseGuards(SessionCookieAuthGuard)
     async update(
         @Param("documentId") documentId: string,
-        @CurrentUser() user: AuthUser,
+        @CurrentUser() user: SessionUser,
         @Body() updateDocumentDto: UpdateDocumentDto
     ) {
         return await this.documentsService.update(documentId, user.id, updateDocumentDto);
     }
 
     @Delete(":documentId")
-    @UseGuards(FirebaseJwtAuthGuard)
-    async remove(@Param("documentId") documentId: string, @CurrentUser() user: AuthUser) {
+    @UseGuards(SessionCookieAuthGuard)
+    async remove(@Param("documentId") documentId: string, @CurrentUser() user: SessionUser) {
         return await this.documentsService.remove(documentId, user.id);
     }
 }

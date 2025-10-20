@@ -2,21 +2,21 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from "@n
 import { ModelsService } from "./models.service";
 import { UpdateModelDto } from "./dto/update-model.dto";
 import { CreateModelDto } from "./dto/create-model.dto";
-import { AuthUser, CurrentUser, FirebaseJwtAuthGuard } from "src/auth";
+import { SessionUser, CurrentUser, SessionCookieAuthGuard } from "src/auth";
 
 @Controller("models")
 export class ModelsController {
     constructor(private readonly modelsService: ModelsService) {}
 
     @Post("")
-    @UseGuards(FirebaseJwtAuthGuard)
-    create(@Body() createModelDto: CreateModelDto, @CurrentUser() user: AuthUser) {
+    @UseGuards(SessionCookieAuthGuard)
+    create(@Body() createModelDto: CreateModelDto, @CurrentUser() user: SessionUser) {
         return this.modelsService.create(user.id, createModelDto);
     }
 
     @Get("user")
-    @UseGuards(FirebaseJwtAuthGuard)
-    findByUserId(@CurrentUser() user: AuthUser) {
+    @UseGuards(SessionCookieAuthGuard)
+    findByUserId(@CurrentUser() user: SessionUser) {
         return this.modelsService.findByUserId(user.id);
     }
 
@@ -26,17 +26,17 @@ export class ModelsController {
     }
 
     @Patch(":modelId")
-    @UseGuards(FirebaseJwtAuthGuard)
+    @UseGuards(SessionCookieAuthGuard)
     update(
         @Param("modelId") modelId: string,
         @Body() updateDocumentDto: UpdateModelDto,
-        @CurrentUser() user: AuthUser
+        @CurrentUser() user: SessionUser
     ) {
         return this.modelsService.update(modelId, user.id, updateDocumentDto);
     }
 
     @Delete(":modelId")
-    @UseGuards(FirebaseJwtAuthGuard)
+    @UseGuards(SessionCookieAuthGuard)
     remove(@Param("modelId") modelId: string) {
         return this.modelsService.remove(modelId);
     }

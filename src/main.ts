@@ -2,6 +2,7 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { get } from "env-var";
 import { ValidationPipe } from "@nestjs/common";
+import * as cookieParser from "cookie-parser";
 
 async function bootstrap() {
     console.log("🚀 API is running on PORT:", get("PORT").asString() ?? 5000);
@@ -12,8 +13,12 @@ async function bootstrap() {
 
     app.setGlobalPrefix("api");
 
+    app.use(cookieParser());
+
     app.enableCors({
+        // origin: get("FRONTEND_URL").required().asString(),
         origin: "*",
+        credentials: true,
     });
 
     app.useGlobalPipes(
