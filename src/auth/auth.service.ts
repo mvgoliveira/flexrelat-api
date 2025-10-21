@@ -79,15 +79,21 @@ export class AuthService {
 
             const userRecord = await this.firebaseProvider.auth.getUser(localId);
 
-            if (!userRecord.emailVerified) {
-                throw new UnauthorizedException("Email não verificado");
+            // if (!userRecord.emailVerified) {
+            //     throw new UnauthorizedException("Email não verificado");
+            // }
+
+            const user = await this.usersService.findByFirebaseUid(userRecord.uid);
+
+            if (!user) {
+                throw new UnauthorizedException("Usuário não encontrado");
             }
 
             return {
-                message: "Login realizado com sucesso",
                 user: {
                     email: userRecord.email,
                     emailVerified: userRecord.emailVerified,
+                    username: user.username,
                 },
                 idToken,
             };

@@ -30,6 +30,7 @@ export class DocumentsController {
     }
 
     @Get("public/:publicCode")
+    @UseGuards(SessionCookieAuthGuard)
     async findByPublicCode(@Param("publicCode") publicCode: string) {
         return await this.documentsService.findByPublicCode(publicCode);
     }

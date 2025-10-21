@@ -46,7 +46,6 @@ export class AuthController {
         res.cookie("session", sessionCookie, options);
 
         return {
-            message: result.message,
             user: result.user,
         };
     }
@@ -57,16 +56,10 @@ export class AuthController {
         const sessionCookie = req.cookies?.session as string | undefined;
 
         if (sessionCookie) {
-            try {
-                // Verificar e revogar o session cookie
-                const decodedClaims = await this.authService.verifySessionCookie(sessionCookie);
-                await this.authService.revokeRefreshTokens(decodedClaims.uid);
-            } catch {
-                // Mesmo que a verificação falhe, limpar o cookie
-            }
+            const decodedClaims = await this.authService.verifySessionCookie(sessionCookie);
+            await this.authService.revokeRefreshTokens(decodedClaims.uid);
         }
 
-        // Limpar o cookie
         res.clearCookie("session", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
