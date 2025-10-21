@@ -47,6 +47,26 @@ export class ModelsService {
         };
     }
 
+    async findById(modelId: string): Promise<Model> {
+        const model = await this.modelsModel.findByPk(modelId);
+
+        if (!model) {
+            throw new NotFoundException(`Modelo não encontrado`);
+        }
+
+        return {
+            id: model.id,
+            userId: model.user_id,
+            name: model.name,
+            publicCode: model.public_code,
+            content: model.content,
+            description: model.description,
+            keywords: model.keywords,
+            createdAt: model.created_at,
+            updatedAt: model.updated_at,
+        };
+    }
+
     async findByUserId(userId: string): Promise<ModelsModel[]> {
         const models = await this.modelsModel.findAll({
             where: { user_id: userId },

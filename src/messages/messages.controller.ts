@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, UseGuards, Delete } from "@nestjs/common";
 import { MessagesService } from "./messages.service";
 import { CreateMessageDto } from "./dto/create-message.dto";
 import { SessionCookieAuthGuard } from "../auth/guards/session-cookie-auth.guard";
@@ -22,5 +22,13 @@ export class MessagesController {
         @Param("relatedType") relatedType: string
     ) {
         return this.messagesService.findByRelated(relatedId, relatedType);
+    }
+
+    @Delete(":relatedType/:relatedId")
+    clearAllMessages(
+        @Param("relatedId") relatedId: string,
+        @Param("relatedType") relatedType: string
+    ) {
+        return this.messagesService.clearAllMessages(relatedId, relatedType);
     }
 }

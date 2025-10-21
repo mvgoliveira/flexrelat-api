@@ -8,5 +8,6 @@ import { DocumentsModel } from "./model/documents";
     imports: [SequelizeModule.forFeature([DocumentsModel])],
     controllers: [DocumentsController],
     providers: [DocumentsService],
+    exports: [DocumentsService],
 })
 export class DocumentsModule {}

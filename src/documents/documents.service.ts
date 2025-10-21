@@ -29,6 +29,25 @@ export class DocumentsService {
         };
     }
 
+    async findById(id: string): Promise<Document> {
+        const document = await this.documentsModel.findByPk(id);
+
+        if (!document) {
+            throw new NotFoundException(`Documento não encontrado`);
+        }
+
+        return {
+            id: document.id,
+            userId: document.user_id,
+            name: document.name,
+            isPublic: document.is_public,
+            content: document.content,
+            publicCode: document.public_code,
+            createdAt: document.created_at,
+            updatedAt: document.updated_at,
+        };
+    }
+
     async findByUserId(userId: string): Promise<DocumentsModel[]> {
         const documents = await this.documentsModel.findAll({
             where: { user_id: userId },

@@ -4,6 +4,7 @@ import { UsersModel } from "./users/model/users";
 import { DocumentsModel } from "./documents/model/documents";
 import { ModelsModel } from "./models/model/models";
 import { MessagesModel } from "./messages/model/messages";
+import { ChangesModel } from "./changes/model/changes";
 
 const SequelizeConfig = SequelizeModule.forRoot({
     dialect: "postgres",
@@ -12,7 +13,7 @@ const SequelizeConfig = SequelizeModule.forRoot({
     username: get("DATABASE_USERNAME").required().asString(),
     password: get("DATABASE_PASSWORD").required().asString(),
     database: get("DATABASE_NAME").required().asString(),
-    models: [UsersModel, DocumentsModel, ModelsModel, MessagesModel],
+    models: [UsersModel, DocumentsModel, ModelsModel, MessagesModel, ChangesModel],
 });
 
 export { SequelizeConfig };

@@ -1,10 +1,12 @@
 import { RelatedTypes } from "../model/messages";
+import { Change } from "../../changes/entities/change.entity";
 
 export class Message {
     id: string;
-    senderId: string;
-    relatedId: string;
-    relatedType: RelatedTypes;
     text: string;
-    createdAt: Date;
+    sender_id: string;
+    related_id: string;
+    related_type: RelatedTypes;
+    created_at: string;
+    changes: Change[];
 }
