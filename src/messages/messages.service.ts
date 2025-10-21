@@ -33,8 +33,7 @@ export class MessagesService {
     async sendMessage(
         userId: string,
         createMessageDto: CreateMessageDto
-        // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-    ): Promise<{ response: Message } | any> {
+    ): Promise<{ response: Change[] }> {
         let content: string = "";
 
         if (createMessageDto.relatedType === ("documents" as any)) {
@@ -90,7 +89,7 @@ export class MessagesService {
             prompt = `Histórico da conversa:\n${context}\n\nNova mensagem do usuário: ${createMessageDto.text}`;
         }
 
-        const response = await this.changesService.sendChangeRequest({
+        const response = await this.changesService.sendFileChangeRequest({
             text: prompt,
             content: content,
         });

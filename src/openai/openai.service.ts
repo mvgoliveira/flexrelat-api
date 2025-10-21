@@ -54,7 +54,7 @@ export class OpenAiService {
         return res.choices[0].message.content;
     }
 
-    async sendChangeRequest(prompt: string): Promise<string> {
+    async sendFileChangeRequest(prompt: string): Promise<string> {
         const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
             {
                 role: "system",
