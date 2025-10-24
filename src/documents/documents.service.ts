@@ -15,6 +15,7 @@ export class DocumentsService {
     async create(createDocumentDto: CreateDocumentDto): Promise<Document> {
         const document = await this.documentsModel.create({
             user_id: createDocumentDto.user_id,
+            content: "<p></p><p></p>",
         });
 
         return {
@@ -59,6 +60,14 @@ export class DocumentsService {
                 ["created_at", "createdAt"],
                 ["updated_at", "updatedAt"],
             ],
+            include: [
+                {
+                    model: DocumentsModel["associations"]["user"].target,
+                    as: "user",
+                    attributes: ["id", "username", "email"],
+                },
+            ],
+            order: [["created_at", "DESC"]],
         });
 
         if (documents.length <= 0) {

@@ -1,4 +1,14 @@
-import { Column, CreatedAt, DataType, Model, Table, UpdatedAt } from "sequelize-typescript";
+import {
+    BelongsTo,
+    Column,
+    CreatedAt,
+    DataType,
+    ForeignKey,
+    Model,
+    Table,
+    UpdatedAt,
+} from "sequelize-typescript";
+import { UsersModel } from "../../users/model/users";
 
 @Table({
     tableName: "documents",
@@ -14,11 +24,15 @@ export class DocumentsModel extends Model {
     })
     declare id: string;
 
+    @ForeignKey(() => UsersModel)
     @Column({
         type: DataType.UUID,
         allowNull: false,
     })
     declare user_id: string;
+
+    @BelongsTo(() => UsersModel)
+    declare user: UsersModel;
 
     @Column({
         type: DataType.TEXT,
