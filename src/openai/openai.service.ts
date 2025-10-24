@@ -7,7 +7,7 @@ export class OpenAiService {
         apiKey: process.env.OPENAI_API_KEY,
     });
 
-    async sendMessage(prompt: string) {
+    async sendMessage(prompt: string): Promise<string> {
         const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
             {
                 role: "system",
@@ -51,7 +51,7 @@ export class OpenAiService {
             temperature: 0.5,
         });
 
-        return res.choices[0].message.content;
+        return res.choices[0].message.content || "";
     }
 
     async sendFileChangeRequest(prompt: string): Promise<string> {
@@ -94,7 +94,7 @@ export class OpenAiService {
                                 },
                                 "new_content": {
                                     "id": "",
-                                    "html": "HTML novo"
+                                    "html": "HTML novo sem nenhum data-id"
                                 }
                             }
                         ]

@@ -51,7 +51,7 @@ export class ChangesService {
         }));
     }
 
-    async sendChangeRequest(requestChangeDto: RequestChangeDto) {
+    async sendChangeRequest(requestChangeDto: RequestChangeDto): Promise<string> {
         return await this.openAiService.sendMessage(requestChangeDto.prompt);
     }
 

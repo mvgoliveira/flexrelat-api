@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, HttpCode, HttpStatus, Patch } from "@nestjs/common";
+import { Controller, Post, Body, UseGuards, Patch } from "@nestjs/common";
 import { ChangesService } from "./changes.service";
 import { UpdateStatusDto } from "./dto/update-status.dto";
 import { SessionCookieAuthGuard } from "src/auth";
@@ -10,17 +10,15 @@ export class ChangesController {
 
     @Post("request-change")
     @UseGuards(SessionCookieAuthGuard)
-    @HttpCode(HttpStatus.OK)
     async sendChangeRequest(@Body() requestChangeDto: RequestChangeDto) {
         const response = await this.changesService.sendChangeRequest(requestChangeDto);
-        return { data: response };
+        return response;
     }
 
     @Patch("update-status")
     @UseGuards(SessionCookieAuthGuard)
-    @HttpCode(HttpStatus.OK)
     async updateChangeStatus(@Body() updateStatusDto: UpdateStatusDto) {
         const response = await this.changesService.updateChangeStatus(updateStatusDto);
-        return { data: response };
+        return response;
     }
 }

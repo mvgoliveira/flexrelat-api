@@ -25,15 +25,12 @@ export class MessagesService {
             sender_id: message.sender_id,
             related_id: message.related_id,
             related_type: message.related_type,
-            created_at: message.created_at.toISOString(),
+            created_at: message.created_at,
             changes,
         };
     }
 
-    async sendMessage(
-        userId: string,
-        createMessageDto: CreateMessageDto
-    ): Promise<{ response: Change[] }> {
+    async sendMessage(userId: string, createMessageDto: CreateMessageDto): Promise<Message> {
         let content: string = "";
 
         if (createMessageDto.relatedType === ("documents" as any)) {
@@ -116,9 +113,9 @@ export class MessagesService {
             })
         );
 
-        return {
-            response: changes,
-        };
+        const formattedMessage = this.formatMessage(chatMessage, changes);
+
+        return formattedMessage;
     }
 
     async findByRelated(relatedId: string, relatedType: string): Promise<Message[]> {

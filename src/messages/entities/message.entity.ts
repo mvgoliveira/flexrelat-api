@@ -7,6 +7,6 @@ export class Message {
     sender_id: string;
     related_id: string;
     related_type: RelatedTypes;
-    created_at: string;
+    created_at: Date;
     changes: Change[];
 }
