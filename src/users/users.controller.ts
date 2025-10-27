@@ -10,7 +10,7 @@ export class UsersController {
     @UseGuards(SessionCookieAuthGuard)
     getMe(@CurrentUser() user: SessionUser) {
         return {
-            user,
+            ...user,
         };
     }
 }
