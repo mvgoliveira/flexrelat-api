@@ -1,10 +1,9 @@
 import { Controller, Get, UseGuards } from "@nestjs/common";
-import { UsersService } from "./users.service";
 import { CurrentUser, SessionCookieAuthGuard, SessionUser } from "src/auth";
 
 @Controller("users")
 export class UsersController {
-    constructor(private readonly usersService: UsersService) {}
+    constructor() {}
 
     @Get("me")
     @UseGuards(SessionCookieAuthGuard)
