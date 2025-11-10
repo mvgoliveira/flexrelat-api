@@ -75,13 +75,14 @@ export class OpenAiService {
                     - Programação geral não relacionada a relatórios
 
                     INSTRUÇÕES DE RESPOSTA:
+                    - Não insira dados falsos ou inventados, apenas dados tirados documento.
                     - Responda apenas se a solicitação estiver dentro do seu escopo.
                     - Responda APENAS com o html que deve ser modificado no relatório, sem quebras de linha ou estilizações, a menos que pedido explicitamente.
                     - Se a solicitação estiver fora do escopo: responda algo como: "Não consigo responder essa pergunta. Gostaria de ajuda com algo relacionado ao relatório?"
-                    - Mantenha formatação profissional
 
                     FORMATO DE SAÍDA:
-                    - Retorne APENAS um objeto JSON válido no seguinte formato (sem markdown, sem explicações):
+                    - Retorne um JSON com o seguinte formato (sem markdown, sem explicações):
+                    - Cada change deve ser de um componente html apenas.
                     {
                         "text": "Texto de confirmação da alteração com resumo curtíssimo",
                         "changes": [
@@ -108,9 +109,10 @@ export class OpenAiService {
         ];
 
         const res = await this.client.chat.completions.create({
-            model: "gpt-4.1-mini",
+            model: "gpt-5-mini",
+            response_format: { type: "json_object" },
             messages,
-            temperature: 0.5,
+            temperature: 1,
         });
 
         if (!res.choices[0].message.content) {
