@@ -121,8 +121,8 @@ export class DocumentsService {
 
         return {
             id: newDocument.id,
-            content: newDocument.content,
             name: newDocument.name,
+            content: newDocument.content,
             updatedAt: newDocument.updated_at,
         };
     }

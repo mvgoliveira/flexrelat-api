@@ -82,7 +82,9 @@ export class OpenAiService {
 
                     FORMATO DE SAÍDA:
                     - Retorne um JSON com o seguinte formato (sem markdown, sem explicações):
-                    - Cada change deve ser de um componente html apenas.
+                    - Cada change deve ser de um componente html apenas, somente UM pai.
+                    - Quando é feito uma criação, o old_content dever ser o conteúdo acima do novo componente. quando for um conteúdo pra ser adicionado no topo o id deve ser vazio.
+                    - Quando tiver mais de um componente a ser inserido ou atualizado, crie várias changes.
                     {
                         "text": "Texto de confirmação da alteração com resumo curtíssimo",
                         "changes": [
@@ -95,7 +97,7 @@ export class OpenAiService {
                                 },
                                 "new_content": {
                                     "id": "",
-                                    "html": "HTML novo sem nenhum data-id"
+                                    "html": "HTML novo sem nenhum data-id com apenas um elemento pai"
                                 }
                             }
                         ]
@@ -109,7 +111,7 @@ export class OpenAiService {
         ];
 
         const res = await this.client.chat.completions.create({
-            model: "gpt-5-mini",
+            model: "gpt-4.1-mini",
             response_format: { type: "json_object" },
             messages,
             temperature: 1,

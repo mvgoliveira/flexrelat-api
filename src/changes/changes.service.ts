@@ -65,14 +65,7 @@ export class ChangesService {
         const aiResponse = await this.openAiService.sendFileChangeRequest(prompt);
 
         try {
-            let cleanResponse = aiResponse.trim();
-            if (cleanResponse.startsWith("```json")) {
-                cleanResponse = cleanResponse.replace(/^```json\n/, "").replace(/\n```$/, "");
-            } else if (cleanResponse.startsWith("```")) {
-                cleanResponse = cleanResponse.replace(/^```\n/, "").replace(/\n```$/, "");
-            }
-
-            const parsedResponse = JSON.parse(cleanResponse) as AIChangeResponse;
+            const parsedResponse = JSON.parse(aiResponse) as AIChangeResponse;
 
             return {
                 text: parsedResponse.text,
@@ -91,13 +84,18 @@ export class ChangesService {
     }
 
     async createChange(createChangeDto: CreateChangeDto): Promise<Change> {
+        const new_content = {
+            id: createChangeDto.new_content.id,
+            html: createChangeDto.new_content.html.replace(/data-id="[^"]*"/g, ""),
+        };
+
         const change = await this.changesModel.create({
             message_id: createChangeDto.message_id,
             status: createChangeDto.status,
             type: createChangeDto.type,
             text: createChangeDto.text,
             old_content: createChangeDto.old_content,
-            new_content: createChangeDto.new_content,
+            new_content: new_content,
         });
 
         return {
