@@ -37,7 +37,7 @@
     "cookie-parser": "^1.4.7",
     "env-var": "^7.5.0",
     "firebase-admin": "^13.5.0",
-    "openai": "^5.8.2",
+    "openai": "^6.9.1",
     "passport-custom": "^1.1.1",
     "passport-jwt": "^4.0.1",
     "pg": "^8.16.3",
