@@ -38,8 +38,7 @@ export class AuthController {
             maxAge: expiresIn,
             httpOnly: true,
             secure: process.env.NODE_ENV === "production", // true em produção (HTTPS)
-            sameSite:
-                process.env.NODE_ENV === "production" ? ("strict" as const) : ("lax" as const),
+            sameSite: process.env.NODE_ENV === "production" ? ("none" as const) : ("lax" as const),
             path: "/",
         };
 
@@ -63,8 +62,7 @@ export class AuthController {
         res.clearCookie("session", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite:
-                process.env.NODE_ENV === "production" ? ("strict" as const) : ("lax" as const),
+            sameSite: process.env.NODE_ENV === "production" ? ("none" as const) : ("lax" as const),
             path: "/",
         });
 
