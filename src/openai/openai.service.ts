@@ -111,7 +111,7 @@ export class OpenAiService {
         ];
 
         const res = await this.client.chat.completions.create({
-            model: "gpt-5.1-mini",
+            model: "gpt-4.1-mini",
             response_format: { type: "json_object" },
             messages,
             reasoning_effort: "none",
