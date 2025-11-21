@@ -114,7 +114,6 @@ export class OpenAiService {
             model: "gpt-4.1-mini",
             response_format: { type: "json_object" },
             messages,
-            reasoning_effort: "none",
             temperature: 1,
         });
 
