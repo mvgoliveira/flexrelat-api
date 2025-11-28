@@ -75,7 +75,10 @@ export class OpenAiService {
                     * Se estiver fora do escopo, responda: "Não consigo responder essa pergunta. Gostaria de ajuda com algo relacionado ao relatório?"
 
                     FORMATO DE SAÍDA
-                    * Cada change representa um único componente HTML com apenas um elemento pai.
+                    * Cada change representa UM ÚNICO componente HTML (apenas um elemento pai).
+                    * Não agrupe múltiplos componentes em um único change.
+                    * Não faça algo como <p>Texto 1</p><p>Texto 2</p> em um único change.
+                    * Tipos: create, update, delete.
                     * Em criação: old_content.id é o elemento acima do novo componente, ou "" se for no topo.
                     * Em atualização: old_content.html deve ser exatamente o HTML atual.
                     * Em deleção: new_content.html deve ser "".
