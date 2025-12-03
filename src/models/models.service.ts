@@ -5,6 +5,7 @@ import { ModelsModel } from "./model/models";
 import { DocumentsModel } from "../documents/model/documents";
 import { InjectModel } from "@nestjs/sequelize";
 import { Model } from "./entities/model.entity";
+import { OpenAiService } from "src/openai/openai.service";
 
 @Injectable()
 export class ModelsService {
@@ -12,7 +13,8 @@ export class ModelsService {
         @InjectModel(ModelsModel)
         private modelsModel: typeof ModelsModel,
         @InjectModel(DocumentsModel)
-        private documentsModel: typeof DocumentsModel
+        private documentsModel: typeof DocumentsModel,
+        private openAiService: OpenAiService
     ) {}
 
     async create(userId: string, createModelDto: CreateModelDto): Promise<Model> {
@@ -29,10 +31,20 @@ export class ModelsService {
             throw new NotFoundException(`Documento não pertence a este usuário`);
         }
 
+        let content = documentExist.content;
+
+        if (createModelDto.ai_generation) {
+            content = await this.openAiService.sendMessage(
+                `Com base no seguinte conteúdo do relatório, crie um modelo reutilizável:` +
+                    "\n\n" +
+                    documentExist.content
+            );
+        }
+
         const model = await this.modelsModel.create({
             ...createModelDto,
             user_id: userId,
-            content: documentExist.content,
+            content: content,
         });
 
         return {
@@ -44,6 +56,7 @@ export class ModelsService {
             keywords: model.keywords,
             createdAt: model.created_at,
             updatedAt: model.updated_at,
+            content: model.content,
         };
     }
 

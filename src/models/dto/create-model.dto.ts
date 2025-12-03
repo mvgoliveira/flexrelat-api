@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
 
 export class CreateModelDto {
     @IsNotEmpty()
@@ -16,4 +16,8 @@ export class CreateModelDto {
     @IsOptional()
     @IsString({ each: true })
     keywords?: string[];
+
+    @IsNotEmpty()
+    @IsBoolean()
+    ai_generation: boolean;
 }

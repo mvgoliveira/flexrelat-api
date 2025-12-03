@@ -12,31 +12,24 @@ export class OpenAiService {
             {
                 role: "system",
                 content: `
-                    Você é o Flexbot, assistente especializado em relatórios.
+                    Você é o Flexbot, assistente especializado em criação e modificação de relatórios.
 
-                    ESCOPO DE ATUAÇÃO:
-                    - Alterações e geração de conteúdo relatórios
-                    - Análise e interpretação de dados para relatórios
-                    - Formatação e estruturação de conteúdo de relatórios
-                    - Revisão, otimização e melhorias de relatórios
-                    - Correção de erros
-                    - Padronização de formatos de relatórios
+                    ESCOPO
+                    * Criar, alterar, analisar e melhorar conteúdo de relatórios.
+                    * Interpretar dados para fins de relatório.
+                    * Corrigir, otimizar e padronizar conteúdo do relatório.
 
-                    FORA DO ESCOPO:
-                    - Questões não relacionadas a relatórios
-                    - Assuntos pessoais ou entretenimento
-                    - Programação geral não relacionada a relatórios
+                    FORA DO ESCOPO
+                    * Assuntos não relacionados a relatórios.
 
                     INSTRUÇÕES DE RESPOSTA:
-                    - Responda apenas se a solicitação estiver dentro do seu escopo.
-                    - caso seja uma pergunta, responda sem inclusão de conteúdo html.
-                    - Caso seja um pedido de alteração responda APENAS com o html que deve ser modificado no relatório, sem quebras de linha ou estilizações, a menos que pedido explicitamente.
-                    - Se a solicitação estiver fora do escopo: responda algo como: "Não consigo responder essa pergunta. Gostaria de ajuda com algo relacionado ao relatório?"
+                    * Responda apenas se a solicitação estiver dentro do seu escopo.
+                    * Responda APENAS com o html que deve ser modificado no relatório, sem quebras de linha ou estilizações, a menos que pedido explicitamente.
 
                     FORMATO DE SAÍDA:
-                    - Não inclua explicações adicionais sobre o processo
-                    - Não adicione comentários ou observações extras
-                    - Mantenha a estrutura solicitada (HTML, texto, tabelas, etc.)
+                    * Não inclua explicações adicionais sobre o processo
+                    * Não adicione comentários ou observações extras
+                    * Mantenha a estrutura solicitada (HTML, texto, tabelas, etc.)
                 `,
             },
             {
@@ -133,5 +126,39 @@ export class OpenAiService {
         }
 
         return res.choices[0].message.content;
+    }
+
+    async sendTemplateGenerationRequest(prompt: string): Promise<string> {
+        const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+            {
+                role: "system",
+                content: `
+                    Você é um assistente especializado em transformar conteúdos de relatórios em templates.
+
+                    ESCOPO
+                    * Transformar conteúdos HTML de relatórios em templates reutilizáveis.
+                    * Elimine dados que podem ser utilizados como variáveis.
+                    * Mantenha a estrutura HTML intacta, substituindo apenas os dados variáveis por placeholders.
+                    * Use a sintaxe {{ VARIÁVEL_NOME }} para placeholders.
+
+                    FORMATO DE SAÍDA:
+                    * Não inclua explicações adicionais sobre o processo.
+                    * Não adicione comentários ou observações extras.
+                    * Responda APENAS com o template gerado, sem quebras de linha ou estilizações, a menos que pedido explicitamente.
+                `,
+            },
+            {
+                role: "user",
+                content: prompt,
+            },
+        ];
+
+        const res = await this.client.chat.completions.create({
+            model: "gpt-4.1-mini",
+            messages,
+            temperature: 0.5,
+        });
+
+        return res.choices[0].message.content || "";
     }
 }

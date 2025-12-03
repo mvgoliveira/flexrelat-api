@@ -4,9 +4,10 @@ import { ModelsController } from "./models.controller";
 import { SequelizeModule } from "@nestjs/sequelize";
 import { ModelsModel } from "./model/models";
 import { DocumentsModel } from "../documents/model/documents";
+import { OpenAiModule } from "src/openai/openai.module";
 
 @Module({
-    imports: [SequelizeModule.forFeature([ModelsModel, DocumentsModel])],
+    imports: [OpenAiModule, SequelizeModule.forFeature([ModelsModel, DocumentsModel])],
     controllers: [ModelsController],
     providers: [ModelsService],
     exports: [ModelsService],
