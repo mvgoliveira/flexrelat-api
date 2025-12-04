@@ -56,7 +56,6 @@ export class ModelsService {
             keywords: model.keywords,
             createdAt: model.created_at,
             updatedAt: model.updated_at,
-            content: model.content,
         };
     }
 
@@ -86,13 +85,20 @@ export class ModelsService {
             attributes: [
                 "id",
                 "name",
-                "user_id",
                 ["public_code", "publicCode"],
                 "description",
                 "keywords",
                 ["created_at", "createdAt"],
                 ["updated_at", "updatedAt"],
             ],
+            include: [
+                {
+                    model: ModelsModel["associations"]["user"].target,
+                    as: "user",
+                    attributes: ["id", "username", "email"],
+                },
+            ],
+            order: [["created_at", "DESC"]],
         });
 
         if (models.length <= 0) {
