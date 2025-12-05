@@ -14,8 +14,9 @@ export class DocumentsService {
 
     async create(createDocumentDto: CreateDocumentDto): Promise<Document> {
         const document = await this.documentsModel.create({
+            name: createDocumentDto.name || null,
             user_id: createDocumentDto.user_id,
-            content: "<p></p><p></p>",
+            content: createDocumentDto.content || "<p></p><p></p>",
         });
 
         return {

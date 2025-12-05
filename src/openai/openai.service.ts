@@ -144,7 +144,9 @@ export class OpenAiService {
                     FORMATO DE SAÍDA:
                     * Não inclua explicações adicionais sobre o processo.
                     * Não adicione comentários ou observações extras.
-                    * Responda APENAS com o template gerado, sem quebras de linha ou estilizações, a menos que pedido explicitamente.
+                    * Responda APENAS com o template gerado.
+                    * Mantenha os espaços e quebras de linha do HTML original.
+                    * Mantenha os estilos inline conforme o HTML original.
                 `,
             },
             {

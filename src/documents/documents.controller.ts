@@ -19,8 +19,8 @@ export class DocumentsController {
 
     @Post()
     @UseGuards(SessionCookieAuthGuard)
-    async create(@CurrentUser() user: SessionUser) {
-        return this.documentsService.create({ user_id: user.id });
+    async create(@CurrentUser() user: SessionUser, @Body() updateDocumentDto: UpdateDocumentDto) {
+        return this.documentsService.create({ user_id: user.id, ...updateDocumentDto });
     }
 
     @Get("user")

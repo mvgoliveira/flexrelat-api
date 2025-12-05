@@ -9,7 +9,8 @@ import { DocumentsModule } from "./documents/documents.module";
 import { ModelsModule } from "./models/models.module";
 import { AuthModule } from "./auth/auth.module";
 import { FirebaseConfig } from "./firebaseConfig";
-import { MessagesModule } from './messages/messages.module';
+import { MessagesModule } from "./messages/messages.module";
+import { DocumentsDataModule } from "./documents-data/documents-data.module";
 
 @Module({
     imports: [
@@ -23,6 +24,7 @@ import { MessagesModule } from './messages/messages.module';
         ModelsModule,
         AuthModule,
         MessagesModule,
+        DocumentsDataModule,
     ],
 })
 export class AppModule {}
