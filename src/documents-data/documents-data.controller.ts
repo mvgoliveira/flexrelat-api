@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from "@nestjs/common";
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Patch,
+    Param,
+    Delete,
+    UseGuards,
+    UseInterceptors,
+    UploadedFile,
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
 import { DocumentsDataService } from "./documents-data.service";
 import { CreateDocumentsDataDto } from "./dto/create-documents-data.dto";
 import { UpdateDocumentsDataDto } from "./dto/update-documents-data.dto";
@@ -43,5 +55,12 @@ export class DocumentsDataController {
     @UseGuards(SessionCookieAuthGuard)
     async remove(@Param("id") id: string) {
         return await this.documentsDataService.remove(id);
+    }
+
+    @Post("parser")
+    @UseGuards(SessionCookieAuthGuard)
+    @UseInterceptors(FileInterceptor("file"))
+    async parseFile(@UploadedFile() file: Express.Multer.File) {
+        return await this.documentsDataService.parseFileContent(file);
     }
 }
