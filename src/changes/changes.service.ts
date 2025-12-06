@@ -59,8 +59,12 @@ export class ChangesService {
         text: string;
         changes: Change[];
     }> {
+        const attachmentsInfo = requestFileChangeDto.attachments
+            ? `\n\nAnexos relacionados:\n${requestFileChangeDto.attachments}`
+            : "";
+
         const prompt = `Solicitação: ${requestFileChangeDto.text}
-            ${requestFileChangeDto.content ? `\n\nConteúdo HTML atual:\n${requestFileChangeDto.content}` : ""}`;
+            ${requestFileChangeDto.content ? `\n\nConteúdo HTML atual:\n${requestFileChangeDto.content} ${attachmentsInfo}` : ""}`;
 
         const aiResponse = await this.openAiService.sendFileChangeRequest(prompt);
 

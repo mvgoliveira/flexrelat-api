@@ -89,6 +89,7 @@ export class MessagesService {
         const response = await this.changesService.sendFileChangeRequest({
             text: prompt,
             content: content,
+            attachments: createMessageDto.attachments,
         });
 
         const chatMessage = await this.messagesModel.create({

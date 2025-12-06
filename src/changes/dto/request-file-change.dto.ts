@@ -8,4 +8,8 @@ export class RequestFileChangeDto {
     @IsString()
     @IsOptional()
     content: string;
+
+    @IsString()
+    @IsOptional()
+    attachments: string;
 }

@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
 import { RelatedTypes } from "../model/messages";
 
 export class CreateMessageDto {
@@ -13,4 +13,8 @@ export class CreateMessageDto {
     @IsString()
     @IsNotEmpty()
     text: string;
+
+    @IsString()
+    @IsOptional()
+    attachments: string;
 }

@@ -26,7 +26,7 @@ export class DocumentsDataService {
             where: {
                 document_id: documentId,
             },
-            attributes: ["id", "name", "type"],
+            attributes: ["id", "name", "type", "value"],
         });
 
         if (!data || data.length === 0) {
