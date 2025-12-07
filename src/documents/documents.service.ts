@@ -56,6 +56,7 @@ export class DocumentsService {
             attributes: [
                 "id",
                 "name",
+                "content",
                 ["is_public", "isPublic"],
                 ["public_code", "publicCode"],
                 ["created_at", "createdAt"],

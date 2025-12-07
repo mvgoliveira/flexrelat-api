@@ -88,6 +88,7 @@ export class ModelsService {
                 ["public_code", "publicCode"],
                 "description",
                 "keywords",
+                "content",
                 ["created_at", "createdAt"],
                 ["updated_at", "updatedAt"],
             ],
