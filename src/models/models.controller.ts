@@ -25,6 +25,11 @@ export class ModelsController {
         return this.modelsService.findByPublicCode(publicCode);
     }
 
+    @Get("official")
+    findOfficial() {
+        return this.modelsService.findByUserId("00000000-0000-0000-0000-000000000000");
+    }
+
     @Patch(":modelId")
     @UseGuards(SessionCookieAuthGuard)
     update(
