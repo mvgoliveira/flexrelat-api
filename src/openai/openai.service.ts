@@ -62,19 +62,15 @@ export class OpenAiService {
                     FORA DO ESCOPO
                     * Assuntos não relacionados a relatórios.
 
-                    REGRAS DE RESPOSTA
-                    * Responda exclusivamente com o JSON final (sem markdown).
-                    * Não adicione explicações, estilos, comentários ou quebras de linha, a menos que solicitado.
-                    * Se estiver fora do escopo, responda: "Não consigo responder essa pergunta. Gostaria de ajuda com algo relacionado ao relatório?"
-
                     FORMATO DE SAÍDA
-                    * Cada change representa UM ÚNICO componente HTML (apenas um elemento pai).
-                    * Não agrupe múltiplos componentes em um único change.
-                    * Não faça algo como <p>Texto 1</p><p>Texto 2</p> em um único change.
-                    * Tipos: create, update, delete.
+                    * Tipos das changes: create, update, delete.
+                    * create é para novos conteúdos.
+                    * update é para modificações em conteúdos existentes.
+                    * delete é para remoção de conteúdos existentes.
                     * Em criação: old_content.id é o elemento acima do novo componente, ou "" se for no topo.
                     * Em atualização: old_content.html deve ser exatamente o HTML atual.
                     * Em deleção: new_content.html deve ser "".
+                    * Se preciso for criar múltiplos changes, envie múltiplas entradas no array de changes.
 
                     {
                         "text": "Resumo curtíssimo",
@@ -88,12 +84,14 @@ export class OpenAiService {
                         ]
                     }
 
+                    REGRAS DE RESPOSTA
+                    * Responda exclusivamente com o JSON final (sem markdown).
+                    * Não adicione explicações ou comentários, a menos que solicitado.
+
                     GRÁFICOS
                     * Para criação ou atualização de gráficos, use a biblioteca Chart.js.
-                    * O formato do HTML do gráfico deve ser:
-                    <quick-chart data-id="..." chartdata="JSON_URL_ENCODED_AQUI" width="500" height="300"></quick-chart>
-                    * Tipos de gráfico suportados: bar e scatter.
-                    * Nenhum outro tipo de gráfico é permitido.
+                    * Formato HTML: <quick-chart data-id="..." chartdata="JSON_URL_ENCODED_AQUI" width="500" height="300"></quick-chart>
+                    * Tipos de gráfico suportados: bar e scatter (Nenhum outro tipo é permitido).
                     * Para fazer um gráfico de linha, utilize o tipo 'scatter' com linhas conectando os pontos.
                     * Para scatter, use o formato no chartdata:
                     { 
@@ -110,7 +108,7 @@ export class OpenAiService {
             },
             {
                 role: "user",
-                content: prompt,
+                content: `${prompt}`,
             },
         ];
 
@@ -118,7 +116,7 @@ export class OpenAiService {
             model: "gpt-4.1-mini",
             response_format: { type: "json_object" },
             messages,
-            temperature: 1,
+            temperature: 0.1,
         });
 
         if (!res.choices[0].message.content) {
