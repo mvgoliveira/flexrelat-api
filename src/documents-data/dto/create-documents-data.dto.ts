@@ -12,7 +12,7 @@ export class CreateDocumentsDataDto {
     @IsNotEmpty()
     value: object;
 
-    @IsEnum(["csv", "xls", "xlsx", "json", "pdf", "text"])
+    @IsEnum(["csv", "xls", "xlsx", "pdf", "text"])
     @IsNotEmpty()
     type: string;
 }

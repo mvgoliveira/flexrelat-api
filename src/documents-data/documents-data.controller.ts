@@ -61,6 +61,7 @@ export class DocumentsDataController {
     @UseGuards(SessionCookieAuthGuard)
     @UseInterceptors(FileInterceptor("file"))
     async parseFile(@UploadedFile() file: Express.Multer.File) {
-        return await this.documentsDataService.parseFileContent(file);
+        const data = await this.documentsDataService.parseFileContent(file);
+        return data;
     }
 }
