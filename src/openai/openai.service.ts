@@ -73,7 +73,7 @@ export class OpenAiService {
                     * Você pode enviar múltiplas entradas no array de changes[], de tipos diferentes.
 
                     {
-                        "text": "Resumo curtíssimo",
+                        "text": "Faça um resumo curtíssimo (máximo 2 frases)",
                         "changes": [
                             {
                             "type": "create" | "update" | "delete",
@@ -89,7 +89,7 @@ export class OpenAiService {
                     * Não adicione explicações ou comentários, a menos que solicitado.
 
                     GRÁFICOS
-                    * Para criação ou atualização de gráficos, use a biblioteca QuickChart com uso de Chart.js.
+                    * Para criação ou atualização de gráficos, use a biblioteca QuickChart.
                     * Formato HTML: <quick-chart data-id="..." chartdata="JSON_URL_ENCODED_AQUI" width="500" height="300"></quick-chart>
                     * Tipos de gráfico suportados: bar e scatter (Nenhum outro tipo é permitido).
                     * Para fazer um gráfico de linha, utilize o tipo 'scatter' com linhas conectando os pontos.
@@ -101,7 +101,7 @@ export class OpenAiService {
                     * Para bar, use o formato no chartdata:
                     {
                         type: "bar",
-                        data: { labels: ["Categoria 1", "Categoria 2", "Categoria 3"], datasets: [{ label: "NOME", data: [] }]},
+                        data: { labels: ["Categoria 1", "Categoria 2", "Categoria 3"], datasets: [{ label: "Dado 1", data: [1, 2, 3] }, { label: "Dado 2", data: [1, 2, 3] }]},
                         options: { title: { display: true, text: "Título do Gráfico" }, legend: { display: true, position: "top", labels: { usePointStyle: false, boxWidth: 13 }}, scales: { xAxes: [{stacked: false, scaleLabel: { display: true, labelString: "Eixo X" }}], yAxes: [{stacked: false, scaleLabel: { display: true, labelString: "Eixo Y" }, ticks: { beginAtZero: true }}]}},
                     }
                 `,
@@ -113,10 +113,10 @@ export class OpenAiService {
         ];
 
         const res = await this.client.chat.completions.create({
-            model: "gpt-4.1-mini",
+            model: "gpt-5-mini",
             response_format: { type: "json_object" },
             messages,
-            temperature: 0.1,
+            temperature: 1,
         });
 
         if (!res.choices[0].message.content) {
