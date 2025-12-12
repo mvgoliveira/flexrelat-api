@@ -117,9 +117,7 @@ export class DocumentsService {
             throw new NotFoundException(`Documento não pertence a este usuário`);
         }
 
-        const newDocument = await document.update(updateDocumentDto, {
-            silent: false,
-        });
+        const newDocument = await document.update(updateDocumentDto);
 
         return {
             id: newDocument.id,
