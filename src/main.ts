@@ -3,6 +3,7 @@ import { AppModule } from "./app.module";
 import { get } from "env-var";
 import { ValidationPipe } from "@nestjs/common";
 import * as cookieParser from "cookie-parser";
+import * as bodyParser from "body-parser";
 
 async function bootstrap() {
     console.log("🚀 API is running on PORT:", get("PORT").asString() ?? 5000);
@@ -10,6 +11,9 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule, {
         snapshot: get("ENVIRONMENT").required().asString() != "production",
     });
+
+    app.use(bodyParser.json({ limit: "20mb" }));
+    app.use(bodyParser.urlencoded({ limit: "20mb", extended: true }));
 
     app.setGlobalPrefix("api");
 
