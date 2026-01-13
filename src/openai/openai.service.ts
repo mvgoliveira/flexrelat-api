@@ -73,7 +73,7 @@ export class OpenAiService {
                     * Você pode enviar múltiplas entradas no array de changes[], de tipos diferentes.
 
                     {
-                        "text": "Faça um resumo curtíssimo (máximo 2 frases)",
+                        "text": Faça um resumo curtíssimo sobre a alteração (máximo 2 frases),
                         "changes": [
                             {
                             "type": "create" | "update" | "delete",
@@ -95,14 +95,14 @@ export class OpenAiService {
                     * Para fazer um gráfico de linha, utilize o tipo 'scatter' com linhas conectando os pontos.
                     * Para scatter, use o formato no chartdata:
                     { 
-                        type: "scatter", data: { datasets: [ { label: "NOME", showLine: true, lineTension: 0, fill: false, data: [{ x: VALOR, y: VALOR }]}]},
-                        options: { title: { display: true, text: "Título do Gráfico" }, legend: { display: true, position: "top", labels: { usePointStyle: false, boxWidth: 13 }}, scales: { xAxes: [{ type: "linear", display: true, scaleLabel: { display: true, labelString: "Eixo X" }, ticks: { major: { enabled: false } }}], yAxes: [{ type: "linear", display: true, scaleLabel: { display: true, labelString: "Eixo Y" }, ticks: { major: { enabled: false } } }]}},
+                        type: "scatter", data: { datasets: [ { label: NOME, showLine: true, lineTension: 0, fill: false, data: [{ x: VALOR, y: VALOR }]}]},
+                        options: { title: { display: true, text: TÍTULO DO GRÁFICO }, legend: { display: true, position: "top", labels: { usePointStyle: false, boxWidth: 13 }}, scales: { xAxes: [{ type: "linear", display: true, scaleLabel: { display: true, labelString: "Eixo X" }, ticks: { major: { enabled: false } }}], yAxes: [{ type: "linear", display: true, scaleLabel: { display: true, labelString: "Eixo Y" }, ticks: { major: { enabled: false } } }]}},
                     }
                     * Para bar, use o formato no chartdata:
                     {
                         type: "bar",
                         data: { labels: ["Categoria 1", "Categoria 2", "Categoria 3"], datasets: [{ label: "Dado 1", data: [1, 2, 3] }, { label: "Dado 2", data: [1, 2, 3] }]},
-                        options: { title: { display: true, text: "Título do Gráfico" }, legend: { display: true, position: "top", labels: { usePointStyle: false, boxWidth: 13 }}, scales: { xAxes: [{stacked: false, scaleLabel: { display: true, labelString: "Eixo X" }}], yAxes: [{stacked: false, scaleLabel: { display: true, labelString: "Eixo Y" }, ticks: { beginAtZero: true }}]}},
+                        options: { title: { display: true, text: TÍTULO DO GRÁFICO }, legend: { display: true, position: "top", labels: { usePointStyle: false, boxWidth: 13 }}, scales: { xAxes: [{stacked: false, scaleLabel: { display: true, labelString: "Eixo X" }}], yAxes: [{stacked: false, scaleLabel: { display: true, labelString: "Eixo Y" }, ticks: { beginAtZero: true }}]}},
                     }
                 `,
             },
@@ -113,7 +113,7 @@ export class OpenAiService {
         ];
 
         const res = await this.client.chat.completions.create({
-            model: "gpt-5-mini",
+            model: "gpt-5.1",
             response_format: { type: "json_object" },
             messages,
             temperature: 1,
